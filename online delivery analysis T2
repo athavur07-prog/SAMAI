@@ -1,0 +1,56 @@
+#import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#load cleaned dataset and display informations
+
+df=pd.read_csv("cleaned_dataset.csv")
+
+#count restaurants with and w/o online delivery
+
+delivery_count=df["Has Online delivery"].value_counts()
+print("\n Number of restaurants with and without online delivery")
+print(delivery_count)
+
+#Average rating based on online delivery
+average_rating=df.groupby("Has Online delivery")["Aggregate rating"].mean()
+print("\n Average rating based on online delivery:")
+print(average_rating)
+
+# % of restaurants providing online delivery
+
+deli_percentage=(delivery_count/delivery_count.sum())*100
+print("\n percentage of restaurants providing online delivery")
+print(deli_percentage)
+
+#bar chart for online delivery
+
+plt.figure(figsize=(8,5))
+sns.barplot(x=delivery_count.index,y=delivery_count.values)
+plt.title("Restaurant with and without online delivery")
+plt.xlabel("online delivery")
+plt.ylabel("number of restaurant")
+plt.tight_layout()
+plt.show()
+
+#pie for OD %
+
+plt.figure(figsize=(7,7))
+plt.pie(delivery_count.values,labels=delivery_count.index,autopct="%1.1f%%",startangle=90)
+plt.title("Percentage of restaurants having online delivery")
+plt.show()
+
+#bar for avg rating
+
+plt.figure(figsize=(6,5))
+sns.barplot(x=average_rating.index,y=average_rating.values)
+plt.title("Average rating based on online delivery")
+plt.xlabel("online delivery")
+plt.ylabel("Average rating")
+plt.tight_layout()
+plt.show()
+
+#completion
+
+print("\n TASK 2 COMPLETED SUCCESSFULLY")

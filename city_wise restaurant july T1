@@ -1,0 +1,79 @@
+#import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#load cleaned dataset and display informations
+
+df=pd.read_csv("cleaned_dataset.csv")
+print("First 5 Rows:")
+print(df.head())
+print("/n Dataset information")
+print(df.info())
+
+#Number of restaurants in each City
+
+City_count=df["City"].value_counts()
+print("\n Number of restaurants in each City :")
+print(City_count)
+
+#top 10 cities with highest restaurant
+
+top10=City_count.head(10)
+print("\n Top 10 cities")
+print(top10)
+
+#with minimum barrier of count 5
+valid_city=City_count[City_count>=5].index
+avg_rate=df[df["City"].isin(valid_city)].groupby("City")["Aggregate rating"].mean()
+avg_rate=avg_rate.sort_values(ascending=False)
+print("\n Average Rating of each city with 5 mininum \n")
+print(avg_rate)
+
+#average rating
+
+average_rating=df.groupby("City")["Aggregate rating"].mean()
+average_rating=average_rating.sort_values(ascending=False)
+print("\n Average Rating of each city \n")
+print(average_rating)
+
+#bar graph for top 10
+
+plt.figure(figsize=(10,6))
+sns.barplot(x=top10.index,y=top10.values)
+plt.title("Top 10 cities by Restaurant count")
+plt.xlabel("city")
+plt.ylabel("number of restaurant")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+#bar graph for min 5 range
+
+top_rate=avg_rate.head(10)
+plt.figure(figsize=(10,6))
+plt.bar(top_rate.index,top_rate.values)
+plt.title("Top 10 cities by avg rating with barrier as 5")
+plt.xlabel("city")
+plt.ylabel("Average rating")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+
+#bar graph for average rating
+
+top_rating = average_rating.head(10)
+plt.figure(figsize=(10,6))
+plt.bar(top_rating.index,top_rating.values)
+plt.title("Top 10 cities by avg rating")
+plt.xlabel("city")
+plt.ylabel("Average rating")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+#completion
+
+print("\n TASK 1 COMPLETED SUCCESSFULLY")
+

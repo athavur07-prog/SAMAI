@@ -1,0 +1,59 @@
+#import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#load cleaned dataset and display informations
+
+df=pd.read_csv("cleaned_dataset.csv")
+
+#count restaurants in each price range
+
+price_count=df["Price range"].value_counts().sort_index()
+print("\n Number of restaurant in each price range")
+print(price_count)
+
+#avg rating for each price range
+
+avg_rating=df.groupby("Price range")["Aggregate rating"].mean()
+print("\n Average rating for each price range")
+print(avg_rating)
+
+#highest avg rating w.r.t price range
+
+high_price=avg_rating.idxmax()
+high_rate=avg_rating.max()
+print("\n Price range with highest average rating")
+print("Price range:",high_price)
+print("Average rating:",round(high_rate,2))
+
+#bar chart for no: of restaurants
+
+plt.figure(figsize=(8,5))
+sns.barplot(x=price_count.index,y=price_count.values)
+plt.title("No: of Restaurant in each price range")
+plt.xlabel("price range")
+plt.ylabel("number of restaurant")
+plt.tight_layout()
+plt.show()
+
+#pie chart for restaurant distribution 
+
+plt.figure(figsize=(7,7))
+plt.pie(price_count.values,labels=price_count.index,autopct="%1.1f%%",startangle=90)
+plt.title("Distribution of restaurants by price range")
+plt.show()
+
+#bar chart for average rating
+
+plt.figure(figsize=(8,5))
+sns.barplot(x=avg_rating.index,y=avg_rating.values)
+plt.title("Average price range for each price range")
+plt.xlabel("price range")
+plt.ylabel("Average rating")
+plt.tight_layout()
+plt.show()
+
+#completion
+
+print("\n TASK 3 COMPLETED SUCCESSFULLY")
